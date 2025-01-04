@@ -1,7 +1,7 @@
 import React, { createContext, useMemo, useContext } from "react";
-import { io, Socket } from "socket.io-client";
+import { io } from "socket.io-client";
 
-const SocketContext = createContext<Socket | null>(null);
+const SocketContext = createContext(null);
 
 export const useSocket = () => {
   const socket = useContext(SocketContext);
