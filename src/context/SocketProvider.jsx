@@ -1,19 +1,27 @@
 import React, { createContext, useMemo, useContext } from "react";
-import { io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 
-const SocketContext = createContext(null);
+const SocketContext = createContext<Socket | null>(null);
 
 export const useSocket = () => {
   const socket = useContext(SocketContext);
+  if (!socket) {
+    throw new Error("useSocket must be used within a SocketProvider");
+  }
   return socket;
 };
 
-export const SocketProvider = (props) => {
-  const socket = useMemo(() => io(process.env.Socket_Server), []);
+
+
+export const SocketProvider = ({ children }) => {
+  const socket = useMemo(() => {
+    const baseUrl ="https://server-0h2u.onrender.com";
+    return io(baseUrl);
+  }, []);
 
   return (
     <SocketContext.Provider value={socket}>
-      {props.children}
+      {children}
     </SocketContext.Provider>
   );
 };
